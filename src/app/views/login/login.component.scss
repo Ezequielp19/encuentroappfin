@@ -1,0 +1,67 @@
+.login-container {
+  .login-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  ion-item {
+    --background: #f9f9f9;
+    --border-radius: 8px;
+    margin-bottom: 15px;
+  }
+
+  ion-input {
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+
+  ion-button {
+    margin-top: 10px;
+  }
+
+  .google-button {
+    --background: #46c2a3;
+    color: white;
+    font-weight: bold;
+
+    ion-icon {
+      --color: white;
+    }
+  }
+
+  .facebook-button {
+    --background: #3b5998;
+    color: white;
+    font-weight: bold;
+
+    ion-icon {
+      --color: white;
+    }
+  }
+
+  a {
+    color: #3880ff;
+    text-decoration: none;
+  }
+
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+
+  .google-button {
+    --background:#46c2a3;
+    color: white;
+    font-weight: bold;
+  }
+
+  .facebook-button {
+    --background: #3b5998;
+    color: white;
+    font-weight: bold;
+  }
+

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Buscar Servicios</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="goToProfile()">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar placeholder="Buscar servicios..." (ionInput)="filterServices($event)"></ion-searchbar>
+
+   <ion-item>
+    <ion-label>Categoría:</ion-label>
+    <ion-select (ionChange)="filterServicesByCategory($event.detail.value)">
+      <ion-select-option *ngFor="let category of categories" [value]="category.id">
+        {{ category.nombre }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-list>
+    <ion-item *ngFor="let service of filteredServices" (click)="goToService(service.id)">
+      <ion-avatar slot="start">
+        <img [src]="service.imageUrl" alt="{{service.nombreEmpresa}}" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ service.nombreEmpresa }}</h2>
+                <p>{{ service.price | currency }}</p>
+                        <p>{{ service.servicio }}</p>
+
+        <p>{{ service.description }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
