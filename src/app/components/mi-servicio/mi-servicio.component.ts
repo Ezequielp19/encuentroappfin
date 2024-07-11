@@ -60,7 +60,7 @@ export class MiServicioComponent implements OnInit {
     this.firestoreService.getHorariosByUserId(userId).subscribe((querySnapshot) => {
       this.horarios = querySnapshot.docs.map(doc => doc.data());
       this.sortedHorarios = this.sortHorarios(this.horarios);
-      console.log('Horarios cargados:', this.horarios);
+      // console.log('Horarios cargados:', this.horarios);
     });
   }
 
@@ -105,7 +105,7 @@ export class MiServicioComponent implements OnInit {
   updateService() {
     if (this.serviceId && this.service) {
       this.firestoreService.updateService(this.serviceId, this.service).then(() => {
-        console.log('Service updated successfully');
+        // console.log('Service updated successfully');
       }).catch(error => {
         console.error('Error updating service:', error);
       });
@@ -116,7 +116,7 @@ export class MiServicioComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
-    console.log('Imagen seleccionada:', this.selectedFile);
+    // console.log('Imagen seleccionada:', this.selectedFile);
   }
 
   uploadServiceImage() {
@@ -131,7 +131,7 @@ export class MiServicioComponent implements OnInit {
           if (this.serviceId) {
             await this.firestoreService.updateServiceProfileImage(this.serviceId, downloadURL);
             this.service!.imageUrl = downloadURL; // Actualizamos la URL de la imagen en el servicio
-            console.log('Imagen de perfil del servicio actualizada:', downloadURL);
+            // console.log('Imagen de perfil del servicio actualizada:', downloadURL);
           }
         })
       ).subscribe();

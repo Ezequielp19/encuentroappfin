@@ -111,7 +111,7 @@ export class AuthService {
           fecha_registro: firebase.firestore.FieldValue.serverTimestamp() as any
         };
         try {
-          console.log('Setting new user data:', data);
+          // console.log('Setting new user data:', data);
           await userRef.set(data);
         } catch (error) {
           console.error('Error setting new user data:', error);

@@ -69,13 +69,13 @@ export class CreateServiceComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.imagenUsuario = event.target.files[0];
-      console.log('Imagen seleccionada:', this.imagenUsuario); // Añadir este log para verificar que se selecciona la imagen correctamente
+      // console.log('Imagen seleccionada:', this.imagenUsuario);
 
   }
 
   async onSubmit() {
     if (this.createServiceForm.valid) {
-      console.log('Formulario válido, procesando...');
+      // console.log('Formulario válido, procesando...');
       if (this.currentUser && this.currentUser.id) {
         // Si hay una imagen seleccionada, súbela a Firebase Storage
         if (this.imagenUsuario) {
@@ -92,10 +92,10 @@ export class CreateServiceComponent implements OnInit {
                 providerId: this.currentUser.id,
                 imageUrl: downloadURL
               };
-              console.log('Datos del servicio:', serviceData);
+              // console.log('Datos del servicio:', serviceData);
               try {
                 await this.firestoreService.createService(serviceData);
-                console.log('Servicio creado con éxito');
+                // console.log('Servicio creado con éxito');
               } catch (error) {
                 console.error('Error al crear el servicio:', error);
               }
@@ -107,10 +107,10 @@ export class CreateServiceComponent implements OnInit {
             providerId: this.currentUser.id,
             imageUrl: ''
           };
-          console.log('Datos del servicio:', serviceData);
+          // console.log('Datos del servicio:', serviceData);
           try {
             await this.firestoreService.createService(serviceData);
-            console.log('Servicio creado con éxito');
+            // console.log('Servicio creado con éxito');
           } catch (error) {
             console.error('Error al crear el servicio:', error);
           }

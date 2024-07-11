@@ -179,10 +179,10 @@ export class FirestoreService {
   async createService(service: Service): Promise<void> {
     const serviceId = this.createIdDoc();
     service.id = serviceId;
-    console.log('Creando servicio con ID:', serviceId);
+    // console.log('Creando servicio con ID:', serviceId);
     const serviceRef = doc(this.firestore, `services/${serviceId}`).withConverter(converter<Service>());
     await setDoc(serviceRef, service);
-    console.log('Servicio creado en Firestore:', service);
+    // console.log('Servicio creado en Firestore:', service);
   }
 
   async getServices(): Promise<Service[]> {
@@ -251,7 +251,7 @@ export class FirestoreService {
       const serviceSnapshot = await getDoc(serviceRef);
       if (serviceSnapshot.exists()) {
         const data = serviceSnapshot.data();
-        console.log('Service data:', data);
+        // console.log('Service data:', data);
         return data;
       } else {
         console.error('No such document with ID:', serviceId);
@@ -268,7 +268,7 @@ export class FirestoreService {
     try {
       const userDocRef = doc(this.firestore, `usuarios/${userId}`);
       await updateDoc(userDocRef, { imagen: imageUrl });
-      console.log('Imagen de perfil actualizada en Firestore');
+      // console.log('Imagen de perfil actualizada en Firestore');
     } catch (error) {
       console.error('Error actualizando la imagen de perfil:', error);
     }
@@ -278,7 +278,7 @@ export class FirestoreService {
     const serviceRef = doc(this.firestore, `services/${serviceId}`);
     try {
       await updateDoc(serviceRef, { imageUrl });
-      console.log('Service profile image updated successfully in Firestore');
+      // console.log('Service profile image updated successfully in Firestore');
     } catch (error) {
       console.error('Error updating service profile image:', error);
       throw error;
@@ -289,7 +289,7 @@ export class FirestoreService {
     const serviceRef = doc(this.firestore, `services/${serviceId}`);
     try {
       await updateDoc(serviceRef, serviceData);
-      console.log('Service updated successfully in Firestore');
+      // console.log('Service updated successfully in Firestore');
     } catch (error) {
       console.error('Error updating service:', error);
       throw error;
@@ -305,7 +305,7 @@ export class FirestoreService {
         return;
       }
       await deleteDoc(reviewRef);
-      console.log('Review deleted successfully in Firestore');
+      // console.log('Review deleted successfully in Firestore');
     } catch (error) {
       console.error('Error deleting review:', error);
       throw error;
@@ -315,10 +315,10 @@ export class FirestoreService {
   async createReview(review: Reviews): Promise<void> {
     const reviewId = this.createIdDoc();
     review.id = reviewId;
-    console.log('Creando reseña con ID:', reviewId);
+    // console.log('Creando reseña con ID:', reviewId);
     const reviewRef = doc(this.firestore, `reviews/${reviewId}`).withConverter(converter<Reviews>());
     await setDoc(reviewRef, review);
-    console.log('Reseña creada en Firestore:', review);
+    // console.log('Reseña creada en Firestore:', review);
   }
 
 

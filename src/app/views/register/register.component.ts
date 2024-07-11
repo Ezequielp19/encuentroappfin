@@ -80,7 +80,7 @@ async register() {
     this.email = this.email.trim();
 
     // Log del correo electrónico para depuración
-    console.log('Intentando registrar con el correo:', this.email);
+    // console.log('Intentando registrar con el correo:', this.email);
 
     // Llamar al método de registro del servicio de autenticación
     await this.authService.register(this.email, this.password, this.nombre, this.tipo_usuario);
