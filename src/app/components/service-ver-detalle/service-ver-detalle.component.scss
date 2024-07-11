@@ -1,0 +1,25 @@
+.user-list {
+  ion-header {
+    margin-bottom: 20px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 20px 0;
+  }
+
+  ion-list {
+    margin: 20px;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    ion-button {
+      margin: 0 5px;
+    }
+  }
+}

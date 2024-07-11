@@ -84,12 +84,19 @@ export class ServiceDetailComponent implements OnInit {
     private firestore: AngularFirestore
   ) {}
 
+
+  isAdmin: boolean = false;
+
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.serviceId = params.get('id');
       if (this.serviceId) {
         this.loadService(this.serviceId);
       }
+    });
+
+     this.authService.getCurrentUser().subscribe(user => {
+      this.isAdmin = user.tipo_usuario === 'admin';
     });
   }
 

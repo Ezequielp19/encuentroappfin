@@ -1,23 +1,8 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button autoHide="false"></ion-menu-button>
-    </ion-buttons>
-    <ion-title class="ion-text-center">Ver Servicios</ion-title>
-    <ion-buttons slot="end">
-      <ion-button color="danger" (click)="logout()">
-        <ion-icon name="log-out-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <div *ngIf="services.length === 0">No hay servicios disponibles.</div>
-  <div *ngIf="services.length > 0">
-    <div *ngFor="let service of services">
-      <h3>{{ service.nombreEmpresa }}</h3>
-      <p>{{ service.description }}</p>
+<div *ngIf="services.length === 0">No hay servicios disponibles.</div>
+<div *ngIf="services.length > 0">
+  <div *ngFor="let service of services">
+    <h3>{{ service.nombreEmpresa }}</h3>
+    <p>{{ service.description }}</p>
 
-    </div>
   </div>
-</ion-content>
+</div>

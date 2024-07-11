@@ -1,0 +1,31 @@
+<ion-content class="user-list">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title class="ion-text-center">Lista de Usuarios</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <p>Total de usuarios: {{ userCount }}</p>
+
+    <ion-list>
+      <ion-item *ngFor="let user of displayedUsers">
+        <ion-label>
+          <h2>{{ user.nombre }}</h2>
+          <p>Correo: {{ user.correo }}</p>
+          <p>Tipo de usuario: {{ user.tipo_usuario }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div class="pagination-controls">
+      <ion-button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</ion-button>
+      <ion-button *ngFor="let page of [].constructor(totalPages()); let i = index"
+                  (click)="goToPage(i + 1)"
+                  [color]="currentPage === i + 1 ? 'primary' : 'medium'">
+        {{ i + 1 }}
+      </ion-button>
+      <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages()">Siguiente</ion-button>
+    </div>
+  </ion-content>
+</ion-content>

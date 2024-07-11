@@ -17,6 +17,7 @@ import {
   IonList,
   IonCardContent,
   IonToolbar,
+  IonAvatar,
   IonTitle,
   IonHeader, IonBackButton, IonButtons, IonSpinner, IonSelectOption, IonSelect, IonMenuButton, IonIcon} from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
@@ -41,6 +42,7 @@ standalone: true,
     IonGrid,
     IonRow,
     IonCol,
+    IonAvatar,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -79,4 +81,13 @@ export class VerservicesComponent  implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+   goToService(serviceId: string) {
+    this.router.navigate(['/serviceDetail', serviceId]);
+  }
+
+
+
+
+
 }
