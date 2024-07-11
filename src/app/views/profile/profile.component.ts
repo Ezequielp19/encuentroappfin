@@ -34,12 +34,25 @@ export class ProfileComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() {
+  // ngOnInit() {
+  //   this.authService.getCurrentUser().subscribe(user => {
+  //     this.user = user;
+  //     console.log(this.user);
+  //   });
+  // }
+
+ ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
-      this.user = user;
+      if (user) {
+        this.user = user;
+      } else {
+        // Manejar el caso donde el usuario no existe
+        console.error('No se encontró el usuario');
+      }
       console.log(this.user);
     });
   }
+
 
   selectOption(option: string) {
     this.selectedOption = option;
