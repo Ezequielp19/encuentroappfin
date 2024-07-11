@@ -128,8 +128,10 @@ export class LoginComponent {
             this.router.navigate(['/homeCliente']);
             break;
           case 'proveedor':
-          case 'admin':
             this.router.navigate(['/perfil']);
+            break;
+          case 'admin':
+            this.router.navigate(['/perfil/verServicios']);
             break;
           default:
             this.showAlert('Error', 'Tipo de usuario desconocido');
