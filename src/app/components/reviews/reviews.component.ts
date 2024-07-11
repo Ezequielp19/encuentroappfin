@@ -41,7 +41,7 @@ export class ReviewsComponent implements OnInit {
   reviewForm: FormGroup;
   ratings = [1, 2, 3, 4, 5];
   currentPage = 1;
-  reviewsPerPage = 5;
+  reviewsPerPage = 3;
   totalPages = 0;
   currentUser: User | null = null;
 
@@ -101,7 +101,7 @@ export class ReviewsComponent implements OnInit {
         id: '', // Inicialmente vacío, será asignado en FirestoreService
         servicio_id: this.servicioId, // Usar el servicioId recibido
         nombreEmpresa: this.servicioNombreEmpresa, // Usar el nombre de la empresa del servicio
-        nombreCliente: this.currentUser.nombre,
+        nombreCliente: this.currentUser.nombre.toUpperCase(), // Convertir el nombre del cliente a mayúsculas
         cliente_id: this.currentUser.id, // Asignar el id del usuario autenticado
         calificacion,
         comentario,

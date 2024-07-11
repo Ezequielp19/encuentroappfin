@@ -1,15 +1,20 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Historial de Citas</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/perfilUsuario"></ion-back-button>
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Historial de Citas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="citas$ | async as citas; else loading">
-    <ng-container *ngFor="let cita of citas">
+  <ion-list *ngIf="pagedCitas.length > 0; else loading">
+    <ng-container *ngFor="let cita of pagedCitas[currentPage]">
       <ion-card class="appointment-card">
         <ion-item lines="none" class="appointment-item">
           <div class="appointment-header">
@@ -38,6 +43,21 @@
       </ion-card>
     </ng-container>
   </ion-list>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="previousPage()" [disabled]="currentPage === 0">
+          Anterior
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{currentPage + 1}} / {{pagedCitas.length}}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="nextPage()" [disabled]="currentPage >= pagedCitas.length - 1">
+          Siguiente
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
   <ng-template #loading>
     <ion-spinner></ion-spinner>
   </ng-template>

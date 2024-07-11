@@ -1,8 +1,62 @@
+ion-item {
+  .service-title {
+    font-weight: bold;
+    font-size: 1.2em; /* Ajusta el tamaño de la fuente según sea necesario */
+  }
+
+  .service-price,
+  .service-info,
+  .service-description {
+    font-size: 1em; /* Ajusta el tamaño de la fuente según sea necesario */
+    color: var(--ion-text-color); /* Ajusta el color según sea necesario */
+  }
+
+  .service-price {
+    margin-top: 5px; /* Espaciado superior opcional */
+  }
+
+  .service-info {
+    margin-top: 2px; /* Espaciado superior opcional */
+  }
+
+  .service-description {
+    margin-top: 2px; /* Espaciado superior opcional */
+  }
+
+  /* Añadir borde y sombra para el hover */
+  border: 1px solid transparent;
+  transition: background-color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Efecto de transición */
+}
+
+ion-item:hover {
+  background-color: #f0f0f0; /* Cambia el color de fondo al pasar el mouse */
+  border: 2px solid #34a1cc; /* Añadir borde del color deseado */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra */
+  transform: scale(1.05); /* Aplicar un ligero zoom */
+  z-index: 1; /* Asegurarse de que esté por encima de otros elementos */
+}
+
 ion-avatar {
   width: 60px;
   height: 60px;
+  border: 2px solid #34a1cc; /* Borde más fino con el mismo color */
+  border-radius: 50%;
+  overflow: hidden;
+  transition: border 0.3s ease; /* Efecto de transición */
+}
+
+ion-item:hover ion-avatar {
+  border: 2px solid #34a1cc; /* Mantener el mismo color del borde */
 }
 
 ion-avatar img {
-  object-fit: cover; // Ajusta la imagen para que cubra todo el avatar
+  object-fit: cover; /* Ajusta la imagen para que cubra todo el avatar */
+}
+
+ion-list {
+  ion-item {
+    border-radius: 10px; /* Bordes redondeados */
+    margin: 10px 0; /* Espaciado entre elementos */
+    padding: 10px; /* Espaciado interno */
+  }
 }

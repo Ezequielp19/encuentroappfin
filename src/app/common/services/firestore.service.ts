@@ -1,4 +1,4 @@
-import { Reviews } from './../models/reviews.model';
+import { Reviews } from '../models/reviews.model';
 // import { Reviews } from 'src/app/common/models/reviews.model';
 import { Injectable, inject } from '@angular/core';
 import {
@@ -397,7 +397,10 @@ export class FirestoreService {
 
     return reviews;
   }
-
+  async updateUser(userId: string, data: Partial<User>): Promise<void> {
+    const userDocRef = doc(this.firestore, `usuarios/${userId}`);
+    await updateDoc(userDocRef, data);
+  }
 
 // Método para obtener todos los servicios
   async getAllServices(): Promise<Service[]> {

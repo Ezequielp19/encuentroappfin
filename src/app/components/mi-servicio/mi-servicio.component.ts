@@ -139,4 +139,9 @@ export class MiServicioComponent implements OnInit {
       console.error('No se ha seleccionado ninguna imagen o no se ha cargado el servicio');
     }
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

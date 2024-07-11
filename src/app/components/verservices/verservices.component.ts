@@ -19,10 +19,11 @@ import {
   IonToolbar,
   IonAvatar,
   IonTitle,
-  IonHeader, IonBackButton, IonButtons, IonSpinner, IonSelectOption, IonSelect } from '@ionic/angular/standalone';
+  IonHeader, IonBackButton, IonButtons, IonSpinner, IonSelectOption, IonSelect, IonMenuButton, IonIcon} from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from 'src/app/common/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -52,15 +53,17 @@ standalone: true,
     ReactiveFormsModule,
     IonSelectOption,
     IonSelect,
-    IonButton
-
+    IonButton,
+    IonMenuButton,
+    IonIcon
   ],
 })
 
 export class VerservicesComponent  implements OnInit {
    services: Service[] = [];
 
- constructor(private firestoreService: FirestoreService, private router: Router) { }
+ constructor(private firestoreService: FirestoreService, private router: Router
+  ,  private authService: AuthService,) { }
 
   ngOnInit() {
     this.loadServices();
@@ -74,7 +77,10 @@ export class VerservicesComponent  implements OnInit {
       console.error('Error al obtener los servicios:', error);
     }
   }
-
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
    goToService(serviceId: string) {
     this.router.navigate(['/serviceDetail', serviceId]);

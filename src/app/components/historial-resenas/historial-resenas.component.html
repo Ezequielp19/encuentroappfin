@@ -1,17 +1,21 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Historial de Reseñas</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/perfilUsuario"></ion-back-button>
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Historial de Reseñas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <div *ngIf="(resenas$ | async) as resenas; else loading">
+  <div *ngIf="pagedResenas.length > 0; else loading">
     <ion-list>
-      <ion-item *ngFor="let resena of resenas">
+      <ion-item *ngFor="let resena of pagedResenas[currentPage]">
         <ion-label>
           <h2 *ngIf="userType === 'cliente'">Servicio: {{ resena.nombreEmpresa }}</h2>
           <h2 *ngIf="userType === 'proveedor'">Cliente: {{ resena.nombreCliente }}</h2>
@@ -25,6 +29,21 @@
         </ion-button>
       </ion-item>
     </ion-list>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="previousPage()" [disabled]="currentPage === 0">
+            Anterior
+          </ion-button>
+        </ion-buttons>
+        <ion-title>{{currentPage + 1}} / {{pagedResenas.length}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="nextPage()" [disabled]="currentPage >= pagedResenas.length - 1">
+            Siguiente
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
   </div>
   <ng-template #loading>
     <ion-spinner></ion-spinner>

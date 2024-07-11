@@ -31,10 +31,8 @@ import { Service } from 'src/app/common/models/service.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewsComponent } from '../reviews/reviews.component';
-import {User} from '../../common/models/users.models'
 import { AuthService } from 'src/app/common/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
 
 @Component({
   selector: 'app-service-detail',
@@ -75,21 +73,21 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class ServiceDetailComponent implements OnInit {
   service: Service | null = null;
   serviceId: string | null = null;
-    horarios: any[] = [];
-    sortedHorarios: any[] = [];
+  horarios: any[] = [];
+  sortedHorarios: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private firestoreService: FirestoreService,
-        private authService: AuthService ,
-            private firestore: AngularFirestore
+    private authService: AuthService,
+    private firestore: AngularFirestore
   ) {}
 
 
   isAdmin: boolean = false;
 
-   ngOnInit() {
+  ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.serviceId = params.get('id');
       if (this.serviceId) {
@@ -161,8 +159,11 @@ export class ServiceDetailComponent implements OnInit {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   }
 
-
   navigateToCita() {
     this.router.navigate(['/cita', this.serviceId]);
+  }
+
+  goToProfile() {
+    this.router.navigate(['/perfil']);
   }
 }

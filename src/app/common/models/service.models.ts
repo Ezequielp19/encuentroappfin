@@ -12,4 +12,8 @@ export interface Service {
   dirreccion: string;
   imageUrl: string;
   horarios: any[];
+  instagram?: string;
+  whatsapp?: string;
+  facebook?: string;
+  website?: string;
 }
