@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel, IonMenuButton,IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg } from '@ionic/angular/standalone';
 import { CategoryI } from '../../common/models/categoria.model'; // Update this import according to your actual model path
 import { FirestoreService } from '../../common/services/firestore.service';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { IoniconsModule } from '../../common/modules/ionicons.module';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from 'src/app/common/services/auth.service';
 
 @Component({
   selector: 'app-category',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['crear-categoria.component.scss'], // Update the stylesheet URL accordingly
   standalone: true,
   imports: [IonImg, IonList, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput,
-    IonIcon, IonButton, IonButtons, IonSpinner, IonInput, IonCard,
+    IonIcon, IonButton, IonButtons, IonSpinner, IonMenuButton,IonInput, IonCard,
     FormsModule,
     IoniconsModule, CommonModule
   ],
@@ -27,7 +28,9 @@ export class CrearCategoriaComponent implements OnInit {
   cargando: boolean = false;
   showForm: boolean = false;
 
-  constructor(private firestoreService: FirestoreService, private navCtrl: NavController, private router: Router) {}
+  constructor(private firestoreService: FirestoreService, private navCtrl: NavController, private router: Router
+    ,  private authService: AuthService,
+  ) {}
 
   ngOnInit() {
     this.loadCategories();
@@ -75,5 +78,11 @@ export class CrearCategoriaComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

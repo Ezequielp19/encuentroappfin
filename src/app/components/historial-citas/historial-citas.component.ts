@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { User } from 'src/app/common/models/users.models';
 import { Service } from 'src/app/common/models/service.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-historial-citas',
@@ -27,7 +28,9 @@ export class HistorialCitasComponent implements OnInit {
   userId: string;
   userType: string;
 
-  constructor(private firestoreService: FirestoreService, private authService: AuthService) { }
+  constructor(private firestoreService: FirestoreService, private authService: AuthService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
@@ -165,5 +168,10 @@ export class HistorialCitasComponent implements OnInit {
     if (this.currentPage < this.pagedCitas.length - 1) {
       this.currentPage++;
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

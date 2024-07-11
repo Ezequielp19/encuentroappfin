@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { Reviews } from 'src/app/common/models/reviews.model';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { User } from 'src/app/common/models/users.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-historial-resenas',
@@ -25,7 +26,9 @@ export class HistorialResenasComponent implements OnInit {
   userId: string;
   userType: string;
 
-  constructor(private firestoreService: FirestoreService, private authService: AuthService) { }
+  constructor(private firestoreService: FirestoreService, private authService: AuthService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
@@ -87,5 +90,10 @@ export class HistorialResenasComponent implements OnInit {
     if (this.currentPage < this.pagedResenas.length - 1) {
       this.currentPage++;
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

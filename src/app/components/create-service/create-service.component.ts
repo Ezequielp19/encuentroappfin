@@ -8,6 +8,7 @@ import { CategoryI } from '../../common/models/categoria.model';
 import { User } from 'src/app/common/models/users.models';
 import { AngularFireStorage } from '@angular/fire/compat/storage'; // Importa AngularFireStorage
 import { finalize } from 'rxjs/operators'; // Importa finalize
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class CreateServiceComponent implements OnInit {
     private fb: FormBuilder,
     private firestoreService: FirestoreService,
     private authService: AuthService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private router: Router,
   ) {
     this.createServiceForm = this.fb.group({
       nombreEmpresa: ['', Validators.required],
@@ -119,6 +121,12 @@ export class CreateServiceComponent implements OnInit {
     } else {
       console.error('Formulario inválido');
     }
+  }
+
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
 

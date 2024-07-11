@@ -15,7 +15,8 @@ import { IonCard,     IonTitle,
   IonInput,
   IonButton,
   IonIcon,
-  IonImg, IonHeader, IonToolbar, IonBackButton, IonButtons, IonGrid,IonRow,IonCol,IonAvatar} from '@ionic/angular/standalone';
+  IonImg, IonHeader, IonToolbar, IonBackButton, IonButtons, IonGrid,IonRow,IonCol,IonAvatar, IonMenuButton} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -38,6 +39,7 @@ import { IonCard,     IonTitle,
     IonButton,
     IonIcon,
     IonImg,
+    IonMenuButton,
     IonGrid,IonRow,IonCol,IonAvatar,
     IonCardHeader,IonCardContent,
     IonCardSubtitle,IonCardTitle,
@@ -52,7 +54,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -88,5 +91,10 @@ export class ProfileComponent implements OnInit {
     } else {
       console.error('No se ha seleccionado ninguna imagen o no se ha cargado el usuario');
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
