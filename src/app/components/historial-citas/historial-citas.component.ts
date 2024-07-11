@@ -21,6 +21,9 @@ import { Service } from 'src/app/common/models/service.models';
 })
 export class HistorialCitasComponent implements OnInit {
   citas$: Observable<Citas[]>;
+  citas: Citas[] = [];
+  pagedCitas: Citas[][] = [];
+  currentPage: number = 0;
   userId: string;
   userType: string;
 
@@ -57,6 +60,10 @@ export class HistorialCitasComponent implements OnInit {
           return of([]);
         })
       );
+      this.citas$.subscribe(citas => {
+        this.citas = citas;
+        this.paginateCitas();
+      });
     } else if (this.userType === 'proveedor') {
       this.firestoreService.getServiceByProviderId(this.userId).subscribe(service => {
         console.log('Servicio encontrado para el proveedor:', service);
@@ -78,6 +85,10 @@ export class HistorialCitasComponent implements OnInit {
               return of([]);
             })
           );
+          this.citas$.subscribe(citas => {
+            this.citas = citas;
+            this.paginateCitas();
+          });
         } else {
           console.error('No se encontró un servicio para este proveedor.');
           this.citas$ = of([]);
@@ -135,7 +146,24 @@ export class HistorialCitasComponent implements OnInit {
     }
   }
 
-  createRange(num: number) {
-    return new Array(num);
+  paginateCitas() {
+    const citasPerPage = 3;
+    this.pagedCitas = [];
+    for (let i = 0; i < this.citas.length; i += citasPerPage) {
+      this.pagedCitas.push(this.citas.slice(i, i + citasPerPage));
+    }
+    this.currentPage = 0;
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.pagedCitas.length - 1) {
+      this.currentPage++;
+    }
   }
 }

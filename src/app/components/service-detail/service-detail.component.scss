@@ -1,58 +1,13 @@
-.logo {
-  width: 200px; /* Ajusta el ancho según el tamaño de tu logo */
-  height: auto;  /* Mantén la proporción de aspecto */
-  margin-bottom: 20px;
+ion-header {
+  ion-toolbar {
+    background-color: var(--ion-color-primary);
+    color: white;
+  }
 
+  ion-title {
+    text-align: center;
+  }
 }
-
-
-
-.main-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-/* Estilos para las tarjetas */
-.info-card, .service-card, .about-card {
-  margin: 16px;
-  border-radius: 10px;
-}
-
-.info-card-header, .service-card-header, .about-card-header {
-  padding: 16px;
-  background-color: #34a1cc; // Color de fondo gris claro para los encabezados
-}
-
-.info-card-title, .service-card-title, .about-card-title {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.info-card-subtitle {
-  font-size: 0.9em;
-  color: #666;
-}
-
-.info-card-content, .service-card-content, .about-card-content {
-  padding: 16px;
-}
-
-/* Estilos para la lista de servicios */
-ion-list {
-  background: transparent;
-}
-
-ion-item {
-  --padding-start: 0;
-}
-
-/* Estilo para el botón de reservar cita */
-.book-button {
-  margin: 16px;
-}
-
-
 
 .logo {
   width: 200px; /* Ajusta el ancho según el tamaño de tu logo */
@@ -60,30 +15,43 @@ ion-item {
   margin-bottom: 20px;
 }
 
-.info-card, .service-card, .about-card {
+.info-card {
   margin: 16px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-.info-card-header, .service-card-header, .about-card-header {
+.info-card-header {
   padding: 16px;
-  background-color: #34a1cc; // Color de fondo gris claro para los encabezados
-  color: white; // Texto blanco para contrastar
+  background-color: #34a1cc; /* Color de fondo para los encabezados */
+  color: white; /* Texto blanco para contrastar */
 }
 
-.info-card-title, .service-card-title, .about-card-title {
+.info-card-title {
   font-size: 1.2em;
   font-weight: bold;
 }
 
 .info-card-subtitle {
-  font-size: 0.9em;
-  color: #ccc;
+  font-size: 1.1em;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #34a1cc; /* Color de subtítulo */
 }
 
-.info-card-content, .service-card-content, .about-card-content {
+.info-card-content {
   padding: 16px;
+}
+
+.contact-info p {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.contact-info ion-icon {
+  margin-right: 8px;
+  color: var(--ion-color-primary); /* Color de los iconos */
 }
 
 ion-item {

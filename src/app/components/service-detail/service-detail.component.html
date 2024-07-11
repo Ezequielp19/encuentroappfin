@@ -4,6 +4,13 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title class="ion-text-center">{{ service?.nombreEmpresa.toUpperCase() }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="goToProfile()">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,34 +19,39 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="6" size-md="6">
         <ion-avatar class="logo">
-          <img [src]="service.imageUrl" alt="{{ service.nombreEmpresa }}" />
+          <img [src]="service.imageUrl || 'assets/default-profile.png'" alt="{{ service.nombreEmpresa }}" />
         </ion-avatar>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-
-   <ion-card class="info-card">
+  <ion-card class="info-card">
     <ion-card-header class="info-card-header">
-      <ion-card-subtitle class="info-card-subtitle">Información de contacto</ion-card-subtitle>
       <ion-card-title class="info-card-title ion-text-center">{{ service?.nombreEmpresa.toUpperCase() }}</ion-card-title>
     </ion-card-header>
     <ion-card-content class="info-card-content">
-      <p>
-        <ion-icon name="location-outline"></ion-icon>
-        Dirección:
-        <a [href]="getGoogleMapsUrl(service?.dirreccion)" target="_blank">{{ service?.dirreccion }}</a>
-      </p>
-      <p><ion-icon name="call-outline"></ion-icon> Teléfono: {{ service?.telefono }}</p>
-      <p><ion-icon name="mail-outline"></ion-icon> Email: {{ service?.email }}</p>
+      <h2 class="info-card-subtitle">Información de contacto</h2>
+      <div class="contact-info">
+        <p>
+          <ion-icon name="location-outline"></ion-icon>
+          Dirección:
+          <a [href]="getGoogleMapsUrl(service?.dirreccion)" target="_blank">{{ service?.dirreccion }}</a>
+        </p>
+        <p><ion-icon name="call-outline"></ion-icon> Teléfono: {{ service?.telefono }}</p>
+        <p><ion-icon name="mail-outline"></ion-icon> Email: {{ service?.email }}</p>
+        <p *ngIf="service?.whatsapp"><ion-icon name="logo-whatsapp"></ion-icon> Whatsapp: {{ service?.whatsapp }}</p>
+        <p *ngIf="service?.instagram"><ion-icon name="logo-instagram"></ion-icon> Instagram: <a [href]="service?.instagram" target="_blank">{{ service?.instagram }}</a></p>
+        <p *ngIf="service?.facebook"><ion-icon name="logo-facebook"></ion-icon> Facebook: <a [href]="service?.facebook" target="_blank">{{ service?.facebook }}</a></p>
+        <p *ngIf="service?.website"><ion-icon name="globe-outline"></ion-icon> Sitio Web: <a [href]="service?.website" target="_blank">{{ service?.website }}</a></p>
+      </div>
     </ion-card-content>
   </ion-card>
 
-   <ion-card class="horarios-card">
-    <ion-card-header>
-      <ion-card-title>Horario de atención</ion-card-title>
+  <ion-card class="info-card">
+    <ion-card-header class="info-card-header">
+      <ion-card-title class="info-card-title">Horario de atención</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="info-card-content">
       <ion-list lines="none">
         <ion-item *ngFor="let horario of sortedHorarios">
           {{ formatHorario(horario) }}
@@ -48,23 +60,22 @@
     </ion-card-content>
   </ion-card>
 
-
-  <ion-card class="service-card">
-    <ion-card-header class="service-card-header">
-      <ion-card-title class="service-card-title">Servicios</ion-card-title>
+  <ion-card class="info-card">
+    <ion-card-header class="info-card-header">
+      <ion-card-title class="info-card-title">Servicios</ion-card-title>
     </ion-card-header>
-    <ion-card-content class="service-card-content">
+    <ion-card-content class="info-card-content">
       <ion-list lines="none">
-        <ion-item>{{ service.servicio }}</ion-item>
+        <p>{{ service.servicio }}</p>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="about-card">
-    <ion-card-header class="about-card-header">
-      <ion-card-title class="about-card-title">Sobre nosotros</ion-card-title>
+  <ion-card class="info-card">
+    <ion-card-header class="info-card-header">
+      <ion-card-title class="info-card-title">Sobre nosotros</ion-card-title>
     </ion-card-header>
-    <ion-card-content class="about-card-content">
+    <ion-card-content class="info-card-content">
       <p>{{ service?.description }}</p>
     </ion-card-content>
   </ion-card>

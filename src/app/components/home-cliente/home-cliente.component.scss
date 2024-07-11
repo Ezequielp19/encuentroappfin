@@ -1,3 +1,29 @@
+ion-item {
+  .service-title {
+    font-weight: bold;
+    font-size: 1.2em; // Ajusta el tamaño de la fuente según sea necesario
+  }
+
+  .service-price,
+  .service-info,
+  .service-description {
+    font-size: 1em; // Ajusta el tamaño de la fuente según sea necesario
+    color: var(--ion-text-color); // Ajusta el color según sea necesario
+  }
+
+  .service-price {
+    margin-top: 5px; // Espaciado superior opcional
+  }
+
+  .service-info {
+    margin-top: 2px; // Espaciado superior opcional
+  }
+
+  .service-description {
+    margin-top: 2px; // Espaciado superior opcional
+  }
+}
+
 ion-avatar {
   width: 60px;
   height: 60px;

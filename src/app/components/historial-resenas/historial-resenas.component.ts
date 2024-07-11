@@ -19,6 +19,9 @@ import { User } from 'src/app/common/models/users.models';
 })
 export class HistorialResenasComponent implements OnInit {
   resenas$: Observable<Reviews[]>;
+  resenas: Reviews[] = [];
+  pagedResenas: Reviews[][] = [];
+  currentPage: number = 0;
   userId: string;
   userType: string;
 
@@ -38,13 +41,14 @@ export class HistorialResenasComponent implements OnInit {
 
   async loadReviews() {
     try {
+      let resenas: Reviews[] = [];
       if (this.userType === 'cliente') {
-        const resenas = await this.firestoreService.getReviewsByClientId(this.userId);
-        this.resenas$ = from([resenas]);
+        resenas = await this.firestoreService.getReviewsByClientId(this.userId);
       } else if (this.userType === 'proveedor') {
-        const resenas = await this.firestoreService.getReviewsByProviderId(this.userId);
-        this.resenas$ = from([resenas]);
+        resenas = await this.firestoreService.getReviewsByProviderId(this.userId);
       }
+      this.resenas = resenas;
+      this.paginateResenas();
     } catch (error) {
       console.error('Error cargando reseñas:', error);
     }
@@ -61,6 +65,27 @@ export class HistorialResenasComponent implements OnInit {
       await this.loadReviews(); // Wait for reviews to reload
     } catch (error) {
       console.error('Error eliminando reseña:', error);
+    }
+  }
+
+  paginateResenas() {
+    const resenasPerPage = 5;
+    this.pagedResenas = [];
+    for (let i = 0; i < this.resenas.length; i += resenasPerPage) {
+      this.pagedResenas.push(this.resenas.slice(i, i + resenasPerPage));
+    }
+    this.currentPage = 0;
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.pagedResenas.length - 1) {
+      this.currentPage++;
     }
   }
 }
