@@ -102,7 +102,7 @@ export class ScheduleConfigComponent {
 
     this.firestore.collection('horarios').add(schedule)
       .then(() => {
-        console.log('Horario guardado con éxito');
+        // console.log('Horario guardado con éxito');
       })
       .catch(error => {
         console.error('Error al guardar el horario: ', error);

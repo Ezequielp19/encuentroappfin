@@ -101,7 +101,7 @@ export class CitaComponent implements OnInit {
 
   async fetchServiceSchedule() {
     try {
-      console.log('Fetching service schedule...');
+      // console.log('Fetching service schedule...');
 
       if (!this.serviceId) {
         console.error('Service ID is not available.');
@@ -127,7 +127,7 @@ export class CitaComponent implements OnInit {
           }
 
           this.serviceSchedule = horariosSnapshot.docs[0].data();
-          console.log('Service schedule data:', this.serviceSchedule);
+          // console.log('Service schedule data:', this.serviceSchedule);
 
           this.initializeCalendar();
         });
@@ -271,7 +271,7 @@ export class CitaComponent implements OnInit {
         };
 
         await this.firestoreService.createAppointment(appointment);
-        console.log('Cita confirmada con éxito:', appointment);
+        // console.log('Cita confirmada con éxito:', appointment);
         this.resetSelection();
       } catch (error) {
         console.error('Error al confirmar la cita:', error);

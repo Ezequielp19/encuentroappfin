@@ -37,7 +37,7 @@ export class HistorialCitasComponent implements OnInit {
       if (user) {
         this.userId = user.id;
         this.userType = user.tipo_usuario;
-        console.log('Usuario actual:', user);
+        // console.log('Usuario actual:', user);
         this.loadAppointments();
       } else {
         console.error('No se pudo obtener el usuario actual.');
@@ -69,7 +69,7 @@ export class HistorialCitasComponent implements OnInit {
       });
     } else if (this.userType === 'proveedor') {
       this.firestoreService.getServiceByProviderId(this.userId).subscribe(service => {
-        console.log('Servicio encontrado para el proveedor:', service);
+        // console.log('Servicio encontrado para el proveedor:', service);
         if (service) {
           this.citas$ = from(this.firestoreService.getAppointmentsByService(service.id)).pipe(
             switchMap(citas => {

@@ -60,7 +60,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
-      if (user && user.tipo_usuario !== 'admin') {
+      if (user) {
         this.user = {
           ...user,
           fecha_registro: new Date(user.fecha_registro) // Aseguramos que fecha_registro es un Date
@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
-    console.log('Imagen seleccionada:', this.selectedFile);
+    // console.log('Imagen seleccionada:', this.selectedFile);
   }
 
   uploadProfileImage() {
@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit {
           const downloadURL = await fileRef.getDownloadURL().toPromise();
           await this.firestoreService.updateUserProfileImage(this.user?.id, downloadURL);
           this.user!.imagen = downloadURL; // Actualizamos la URL de la imagen en el usuario
-          console.log('Imagen de perfil actualizada:', downloadURL);
+          // console.log('Imagen de perfil actualizada:', downloadURL);
         })
       ).subscribe();
     } else {

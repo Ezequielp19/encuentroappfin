@@ -117,7 +117,7 @@ export class ServiceDetailComponent implements OnInit {
       .subscribe((horarios: any[]) => {
         this.horarios = horarios;
         this.sortedHorarios = this.sortHorarios(horarios);
-        console.log('Horarios cargados:', this.horarios);
+        // console.log('Horarios cargados:', this.horarios);
       });
   }
 
