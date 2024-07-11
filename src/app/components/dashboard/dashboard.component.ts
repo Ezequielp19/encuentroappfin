@@ -25,6 +25,11 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import {IonRouterOutlet} from '@ionic/angular'
+import { Citas } from 'src/app/common/models/cita.model';
+import { Reviews } from 'src/app/common/models/reviews.model';
+import { FirestoreService } from 'src/app/common/services/firestore.service';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -56,16 +61,16 @@ import {IonRouterOutlet} from '@ionic/angular'
 })
 export class DashboardComponent implements OnInit {
 
-  resenasRecientes = [
-    { cliente: 'Juan', comentario: 'Muy buen servicio', calificacion: 5 },
-    { cliente: 'Ana', comentario: 'Excelente atención', calificacion: 4 }
-  ];
+  resumenActividad: { nuevasCitas: number, calificacionPromedio: number } | undefined;
+  proximasCitas: Citas[] = [];
+  resenasDelDia: Reviews[] = [];
 
-  constructor() { }
+  constructor(private firestoreService: FirestoreService) { }
 
-  ngOnInit() { }
-
-  createRange(num: number) {
-    return new Array(num);
+  async ngOnInit() {
+    this.resumenActividad = await this.firestoreService.getResumenActividad();
+    this.proximasCitas = await this.firestoreService.getProximasCitas();
+    this.resenasDelDia = await this.firestoreService.getResenasDelDia();
   }
+  
 }

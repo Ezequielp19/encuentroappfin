@@ -1,0 +1,8 @@
+<div *ngIf="services.length === 0">No hay servicios disponibles.</div>
+<div *ngIf="services.length > 0">
+  <div *ngFor="let service of services">
+    <h3>{{ service.nombreEmpresa }}</h3>
+    <p>{{ service.description }}</p>
+   
+  </div>
+</div>

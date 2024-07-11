@@ -62,10 +62,19 @@
             <ion-label>Crear Servicio</ion-label>
           </ion-item>
           <!-- Crear Categoria: Solo para Admin -->
-          <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/crearCategoria']" (click)="selectOption('crearCategoria')">
+          <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/crearCategoria']" (click)="selectOption('crearCategoria')" >
             <ion-icon name="briefcase" slot="start"></ion-icon>
             <ion-label>Crear Categoria</ion-label>
           </ion-item>
+
+            <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/verServicios']" (click)="selectOption('verServicios')" >
+            <ion-icon name="briefcase" slot="start"></ion-icon>
+            <ion-label>Ver Servicios</ion-label>
+          </ion-item>
+
+
+
+
 
           <ion-item *ngIf="user?.tipo_usuario === 'cliente'" [routerLink]="['/homeCliente']" (click)="selectOption('homeCliente')">
             <ion-icon name="briefcase" slot="start"></ion-icon>

@@ -41,6 +41,11 @@ export const routes: Routes = [
         path: 'crearServicio',
         loadComponent: () => import('./components/create-service/create-service.component').then(m => m.CreateServiceComponent),
       },
+       {
+        path: 'verServicios',
+        loadComponent: () => import('./components/verservices/verservices.component').then(m => m.VerservicesComponent),
+      },
+
       {
         path: 'crearCategoria',
         loadComponent: () => import('./components/crear-categoria/crear-categoria.component').then(m => m.CrearCategoriaComponent),

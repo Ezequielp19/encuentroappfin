@@ -6,81 +6,49 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumen de Actividad</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-icon name="calendar" slot="start"></ion-icon>
+        <ion-label>Nuevas citas hoy: {{ resumenActividad?.nuevasCitas }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="star" slot="start"></ion-icon>
+        <ion-label>Calificación promedio: {{ resumenActividad?.calificacionPromedio }}</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-<ion-content class="ion-padding">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="6">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Resumen de Actividad</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item>
-                <ion-icon name="calendar-outline" slot="start"></ion-icon>
-                <ion-label>Nuevas citas hoy: 5</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-icon name="cash-outline" slot="start"></ion-icon>
-                <ion-label>Ingresos del mes: $5000</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-icon name="star-outline" slot="start"></ion-icon>
-                <ion-label>Calificación promedio: 4.8</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Próximas Citas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item *ngFor="let cita of proximasCitas">
+        <ion-label>
+          <h2>Cita con cliente: {{ cita.nombre }}</h2>
+          <p>Fecha: {{ cita.fecha_cita | date: 'short' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-      <ion-col size="12" size-md="6">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Próximas Citas</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item>
-                <ion-label>
-                  <h2>CITA CON CLIENTE: JOEL</h2>
-                  <p>FECHA: 14:05:2021 10HS</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Reseñas Recientes</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item *ngFor="let resena of resenasRecientes">
-                <ion-label>
-                  <h2>{{ resena.cliente }}</h2>
-                  <p>{{ resena.comentario }}</p>
-                  <ion-icon name="star" *ngFor="let i of createRange(resena.calificacion)"></ion-icon>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="12" size-md="6">
-        <ion-button expand="block" [routerLink]="['/perfil/historial-citas']">Historial de Citas</ion-button>
-      </ion-col>
-      <ion-col size="12" size-md="6">
-        <ion-button expand="block" [routerLink]="['/perfil/historial-resenas']">Historial de Reseñas</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Reseñas del Día</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item *ngFor="let review of resenasDelDia">
+        <ion-label>
+          <h2>{{ review.nombreCliente }}</h2>
+          <p>{{ review.comentario }}</p>
+          <ion-icon name="star" *ngFor="let _ of [].constructor(review.calificacion)"></ion-icon>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
