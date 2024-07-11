@@ -10,21 +10,25 @@ ion-header {
 }
 
 .logo {
-  width: 200px; /* Ajusta el ancho según el tamaño de tu logo */
-  height: auto;  /* Mantén la proporción de aspecto */
+  width: 150px;
+  height: 150px;
+  margin-top: 20px;
   margin-bottom: 20px;
+  border: 5px solid #34a1cc; /* Borde con color específico */
+  border-radius: 50%; /* Hace que el borde sea circular */
+  box-shadow: 0 0 10px rgba(52, 161, 204, 0.5); /* Efecto de sombra */
 }
 
 .info-card {
   margin: 16px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .info-card-header {
   padding: 16px;
-  background-color: #34a1cc; /* Color de fondo para los encabezados */
-  color: white; /* Texto blanco para contrastar */
+  background-color: #34a1cc;
+  color: white;
 }
 
 .info-card-title {
@@ -36,7 +40,7 @@ ion-header {
   font-size: 1.1em;
   margin-top: 0;
   margin-bottom: 10px;
-  color: #34a1cc; /* Color de subtítulo */
+  color: #34a1cc;
 }
 
 .info-card-content {
@@ -51,7 +55,7 @@ ion-header {
 
 .contact-info ion-icon {
   margin-right: 8px;
-  color: var(--ion-color-primary); /* Color de los iconos */
+  color: var(--ion-color-primary);
 }
 
 ion-item {

@@ -108,7 +108,6 @@ export class AuthService {
           id: user.uid,
           nombre: user.displayName || 'Sin Nombre',
           correo: user.email || 'Sin Correo',
-          tipo_usuario: 'cliente',
           fecha_registro: firebase.firestore.FieldValue.serverTimestamp() as any
         };
         try {

@@ -1,3 +1,4 @@
+import { SelectUserTypeComponent } from './components/select-user-type/select-user-type.component';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -80,6 +81,10 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () => import('./views/register/register.component').then((m) => m.RegisterComponent),
+  },
+  {
+    path: 'tipoUsuario',
+    loadComponent: () => import('./components/select-user-type/select-user-type.component').then((m) => m.SelectUserTypeComponent),
   },
   {
     path: '',

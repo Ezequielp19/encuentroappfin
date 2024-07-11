@@ -17,9 +17,8 @@ import {
   IonTitle,
   IonHeader, IonBackButton, IonButtons, IonSpinner, IonSelectOption, IonSelect, IonSegment, IonSegmentButton, IonImg
 } from '@ionic/angular/standalone';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FirestoreService } from '../../common/services/firestore.service';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -94,7 +93,7 @@ export class LoginComponent {
     } catch (error) {
       const alert = await this.alertController.create({
         header: 'Error',
-        message: 'credenciales incorrectas',
+        message: 'Credenciales incorrectas',
         buttons: ['OK']
       });
       await alert.present();
@@ -106,12 +105,11 @@ export class LoginComponent {
       const userCredential = await this.authService.loginWithFacebook();
       const user = await this.firestoreService.getUserByEmail(userCredential.user.email);
       this.redirectUser(user);
-            await this.showAlert('Éxito', 'Inicio de sesión con Facebook exitoso');
-
+      await this.showAlert('Éxito', 'Inicio de sesión con Facebook exitoso');
     } catch (error) {
       const alert = await this.alertController.create({
         header: 'Error',
-        message: 'credenciales incorrectas',
+        message: 'Credenciales incorrectas',
         buttons: ['OK']
       });
       await alert.present();
@@ -120,16 +118,22 @@ export class LoginComponent {
 
   redirectUser(user: User) {
     if (user) {
-      switch (user.tipo_usuario) {
-        case 'cliente':
-          this.router.navigate(['/homeCliente']);
-          break;
-        case 'proveedor':
-        case 'admin':
-          this.router.navigate(['/perfil']);
-          break;
-        default:
-          this.showAlert('Error', 'Tipo de usuario desconocido');
+      if (!user.tipo_usuario) {
+        // Si el usuario no tiene tipo de usuario asignado, redirigir a la selección de tipo de usuario
+        this.router.navigate(['/tipoUsuario']);
+      } else {
+        // Redirigir según el tipo de usuario
+        switch (user.tipo_usuario) {
+          case 'cliente':
+            this.router.navigate(['/homeCliente']);
+            break;
+          case 'proveedor':
+          case 'admin':
+            this.router.navigate(['/perfil']);
+            break;
+          default:
+            this.showAlert('Error', 'Tipo de usuario desconocido');
+        }
       }
     } else {
       this.showAlert('Error', 'Usuario no encontrado');
@@ -144,9 +148,6 @@ export class LoginComponent {
     });
     await alert.present();
   }
-
-
-
 
   goToResetPassword() {
     this.router.navigate(['/reset-password']);
