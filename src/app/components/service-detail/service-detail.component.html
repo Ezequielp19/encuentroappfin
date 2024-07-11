@@ -69,7 +69,7 @@
     </ion-card-content>
   </ion-card>
 
-  <app-reviews [servicioId]="serviceId"></app-reviews>
+  <app-reviews [servicioId]="serviceId" *ngIf="!isAdmin"></app-reviews>
 
-  <ion-button expand="block" color="primary" class="book-button" (click)="navigateToCita()">Reservar Cita</ion-button>
+  <ion-button expand="block" color="primary" class="book-button" (click)="navigateToCita()" *ngIf="!isAdmin">Reservar Cita</ion-button>
 </ion-content>

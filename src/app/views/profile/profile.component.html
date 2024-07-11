@@ -72,7 +72,10 @@
             <ion-label>Ver Servicios</ion-label>
           </ion-item>
 
-
+ <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/userlist']" (click)="selectOption('userlist')" >
+            <ion-icon name="briefcase" slot="start"></ion-icon>
+            <ion-label>Ver Usuarios</ion-label>
+          </ion-item>
 
 
 

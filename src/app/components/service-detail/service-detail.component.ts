@@ -87,43 +87,7 @@ export class ServiceDetailComponent implements OnInit {
   ) {}
 
 
-// ngOnInit() {
-//     this.route.paramMap.subscribe((params) => {
-//       this.serviceId = params.get('id');
-//       if (this.serviceId) {
-//         this.loadService(this.serviceId);
-//                 this.loadHorarios();
-
-//       }
-//     });
-//   }
-
-//   async loadService(serviceId: string) {
-//     this.firestoreService.getDocumentById<Service>('services', serviceId).subscribe((service) => {
-//       this.service = service;
-//     }, (error) => {
-//       console.error('Error loading service:', error);
-//     });
-//   }
-
-
-//   loadHorarios() {
-
-//     this.authService.getCurrentUser().subscribe((user) => {
-//       if (user) {
-//         const userId = user.id;
-//         this.firestore
-//           .collection('horarios', (ref) => ref.where('userId', '==', userId))
-//           .valueChanges({ idField: 'id' })
-//           .subscribe((horarios: any[]) => {
-//             this.horarios = horarios;
-//             this.sortedHorarios = this.sortHorarios(horarios);
-//             console.log('Horarios cargados:', this.horarios);
-//           });
-//       }
-//     });
-//   }
-
+  isAdmin: boolean = false;
 
    ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -131,6 +95,10 @@ export class ServiceDetailComponent implements OnInit {
       if (this.serviceId) {
         this.loadService(this.serviceId);
       }
+    });
+
+     this.authService.getCurrentUser().subscribe(user => {
+      this.isAdmin = user.tipo_usuario === 'admin';
     });
   }
 

@@ -17,11 +17,13 @@ import {
   IonList,
   IonCardContent,
   IonToolbar,
+  IonAvatar,
   IonTitle,
   IonHeader, IonBackButton, IonButtons, IonSpinner, IonSelectOption, IonSelect } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verservices',
@@ -39,6 +41,7 @@ standalone: true,
     IonGrid,
     IonRow,
     IonCol,
+    IonAvatar,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -57,7 +60,7 @@ standalone: true,
 export class VerservicesComponent  implements OnInit {
    services: Service[] = [];
 
- constructor(private firestoreService: FirestoreService) { }
+ constructor(private firestoreService: FirestoreService, private router: Router) { }
 
   ngOnInit() {
     this.loadServices();
@@ -71,5 +74,14 @@ export class VerservicesComponent  implements OnInit {
       console.error('Error al obtener los servicios:', error);
     }
   }
+
+
+   goToService(serviceId: string) {
+    this.router.navigate(['/serviceDetail', serviceId]);
+  }
+
+
+
+
 
 }

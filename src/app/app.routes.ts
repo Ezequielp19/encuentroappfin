@@ -47,6 +47,13 @@ export const routes: Routes = [
       },
 
       {
+        path: 'userlist',
+        loadComponent: () => import('./components/service-ver-detalle/service-ver-detalle.component').then(m => m.UserListComponent),
+      },
+
+
+
+      {
         path: 'crearCategoria',
         loadComponent: () => import('./components/crear-categoria/crear-categoria.component').then(m => m.CrearCategoriaComponent),
       },
