@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Bienvenido {{ user?.nombre }}</ion-title>
+    <!-- <ion-title class="ion-text-center">Bienvenido {{user.nombre}}</ion-title> -->
     <ion-buttons slot="end">
       <ion-button color="danger" (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon>
@@ -26,7 +26,7 @@
   <ion-card class="info-card">
     <ion-card-header class="info-card-header">
       <ion-card-subtitle class="info-card-subtitle">Información de contacto</ion-card-subtitle>
-      <ion-card-title class="info-card-title">{{ user?.nombre }}</ion-card-title>
+      <!-- <ion-card-title class="info-card-title">{{ user?.nombre }}</ion-card-title> -->
     </ion-card-header>
     <ion-card-content class="info-card-content">
       <p><ion-icon name="mail-outline"></ion-icon> Email: {{ user?.correo }}</p>

@@ -1,4 +1,4 @@
-<!-- <ion-header>
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -10,7 +10,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header> -->
+</ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-split-pane contentId="main-content">
@@ -64,21 +64,22 @@
             <ion-label>Crear Servicio</ion-label>
           </ion-item>
 
-          <!-- Crear Categoria: Solo para Admin -->
-          <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/crearCategoria']" (click)="selectOption('crearCategoria')" >
+         <!-- Crear Categoria: Solo para Admin -->
+          <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/crearCategoria']" (click)="selectOption('crearCategoria')">
             <ion-icon name="pricetags-outline" slot="start"></ion-icon>
             <ion-label>Crear Categoria</ion-label>
           </ion-item>
 
-            <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/verServicios']" (click)="selectOption('verServicios')" >
+          <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/verServicios']" (click)="selectOption('verServicios')">
             <ion-icon name="briefcase" slot="start"></ion-icon>
             <ion-label>Ver Servicios</ion-label>
           </ion-item>
 
- <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/userlist']" (click)="selectOption('userlist')" >
-            <ion-icon name="briefcase" slot="start"></ion-icon>
+          <ion-item *ngIf="user?.tipo_usuario === 'admin'" [routerLink]="['/perfil/userlist']" (click)="selectOption('userlist')">
+            <ion-icon name="add-circle-outline" slot="start"></ion-icon>
             <ion-label>Ver Usuarios</ion-label>
-          </ion-item>          <!-- Buscar Servicio: Solo para Clien -->
+          </ion-item>
+
           <ion-item *ngIf="user?.tipo_usuario === 'cliente'" [routerLink]="['/homeCliente']" (click)="selectOption('homeCliente')">
             <ion-icon name="search-outline" slot="start"></ion-icon>
             <ion-label>Buscar Servicio</ion-label>

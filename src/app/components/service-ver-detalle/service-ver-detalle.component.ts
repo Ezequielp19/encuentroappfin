@@ -11,6 +11,8 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonMenuButton,
+  IonIcon,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -23,7 +25,7 @@ import {
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { User } from 'src/app/common/models/users.models';
 
@@ -46,6 +48,8 @@ standalone: true,
     IonCol,
     IonAvatar,
     IonCard,
+     IonMenuButton,
+  IonIcon,
     IonCardHeader,
     IonCardTitle,
     IonList,
@@ -67,7 +71,7 @@ export class UserListComponent  implements OnInit {
   pageSize: number = 4; // Número de usuarios por página
   currentPage: number = 1;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private router: Router) {}
 
   ngOnInit(): void {
     this.authService.getAllUsers().subscribe(users => {
@@ -104,6 +108,11 @@ export class UserListComponent  implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.userCount / this.pageSize);
+  }
+
+    logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
 
