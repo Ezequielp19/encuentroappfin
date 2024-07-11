@@ -1,3 +1,5 @@
+import { Reviews } from './../models/reviews.model';
+// import { Reviews } from 'src/app/common/models/reviews.model';
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore, collection, doc, getDoc, setDoc, DocumentData, WithFieldValue,
@@ -11,7 +13,8 @@ const { v4: uuidv4 } = require('uuid');
 
 import { User } from '../models/users.models';
 import { Citas } from '../models/cita.model';
-import { Reviews } from '../models/reviews.model';
+// import { Reviews } from '../models/reviews.model';
+// import { Reviews } from './../models/reviews.model';
 import { Service } from '../models/service.models';
 import { CategoryI } from '../models/categoria.model';
 
@@ -336,4 +339,78 @@ export class FirestoreService {
     }
     await deleteDoc(docRef);
   }
+
+
+ // Método para obtener el resumen de actividad del día
+  async getResumenActividad(): Promise<{ nuevasCitas: number, calificacionPromedio: number }> {
+    const hoy = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+    const citasRef = collection(this.firestore, 'Citas') as CollectionReference<Citas>;
+    const querySnapshotCitas = await getDocs(query(citasRef, where('fecha_cita', '==', hoy)));
+
+    let nuevasCitas = 0;
+    querySnapshotCitas.forEach(() => {
+      nuevasCitas++;
+    });
+
+    const reviewsRef = collection(this.firestore, 'reviews') as CollectionReference<Reviews>;
+    const querySnapshotReviews = await getDocs(query(reviewsRef, where('fecha', '==', hoy)));
+
+    let calificacionTotal = 0;
+    let cantidadResenas = 0;
+
+    querySnapshotReviews.forEach(doc => {
+      const review = doc.data();
+      calificacionTotal += review.calificacion;
+      cantidadResenas++;
+    });
+
+    const calificacionPromedio = cantidadResenas > 0 ? calificacionTotal / cantidadResenas : 0;
+
+    return { nuevasCitas, calificacionPromedio };
+  }
+
+  // Método para obtener las próximas citas
+  async getProximasCitas(): Promise<Citas[]> {
+    const hoy = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+    const citasRef = collection(this.firestore, 'Citas') as CollectionReference<Citas>;
+    const querySnapshot = await getDocs(query(citasRef, where('fecha_cita', '>', hoy)));
+
+    const citas: Citas[] = [];
+    querySnapshot.forEach(doc => {
+      citas.push(doc.data());
+    });
+
+    return citas;
+  }
+
+
+  // Método para obtener las reseñas del día
+  async getResenasDelDia(): Promise<Reviews[]> {
+    const hoy = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+    const reviewsRef = collection(this.firestore, 'reviews') as CollectionReference<Reviews>;
+    const querySnapshot = await getDocs(query(reviewsRef, where('fecha', '==', hoy)));
+
+    const reviews: Reviews[] = [];
+    querySnapshot.forEach(doc => {
+      reviews.push(doc.data());
+    });
+
+    return reviews;
+  }
+
+
+// Método para obtener todos los servicios
+  async getAllServices(): Promise<Service[]> {
+    const servicesRef = collection(this.firestore, 'services') as CollectionReference<Service>;
+    const querySnapshot = await getDocs(servicesRef);
+    const services: Service[] = [];
+    querySnapshot.forEach((doc) => {
+      services.push(doc.data());
+    });
+    return services;
+  }
 }
+
+
+
+

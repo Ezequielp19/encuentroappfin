@@ -28,6 +28,11 @@ export class AuthService {
     ).subscribe(userData => this.userSubject.next(userData));
   }
 
+    // Método para obtener todos los usuarios
+  getAllUsers(): Observable<User[]> {
+    return this.firestore.collection<User>('usuarios').valueChanges();
+  }
+
   async login(email: string, password: string): Promise<firebase.auth.UserCredential> {
     try {
       const credential = await this.afAuth.signInWithEmailAndPassword(email, password);
