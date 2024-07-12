@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">{{ service?.nombreEmpresa.toUpperCase() }}</ion-title>
+    <ion-title class="ion-text-center">Pide tu Cita</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToProfile()">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -17,26 +23,30 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Selecciona una fecha</ion-card-subtitle>
+      <ion-card-subtitle>Horarios de atención</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-datetime display-format="DD/MM/YYYY" (ionChange)="onDateSelected($event)"></ion-datetime>
+      <ion-list lines="none">
+        <ion-item *ngFor="let horario of sortedHorarios">
+          {{ formatHorario(horario) }}
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="availableSlots.length > 0">
+  <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Horarios disponibles</ion-card-subtitle>
+      <ion-card-subtitle>Selecciona una fecha</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-select [(ngModel)]="selectedSlot" placeholder="Selecciona un horario">
-        <ion-select-option *ngFor="let slot of availableSlots" [value]="slot">
-          {{ slot }}
-        </ion-select-option>
-      </ion-select>
-      <ion-button expand="full" (click)="confirmAppointment()" [disabled]="!selectedSlot">
-        Confirmar cita
-      </ion-button>
+      <ion-datetime
+        [min]="today"
+        [locale]="locale"
+        display-format="DD/MM/YYYY"
+        (ionChange)="onDateSelected($event)"
+      ></ion-datetime>
     </ion-card-content>
   </ion-card>
+
+  <ion-spinner *ngIf="isLoading"></ion-spinner>
 </ion-content>

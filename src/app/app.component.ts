@@ -14,7 +14,7 @@ import { CrearCategoriaComponent } from './components/crear-categoria/crear-cate
   templateUrl: 'app.component.html',
   standalone: true,
   imports: [RouterModule,IonHeader, IonList, IonApp, IonRouterOutlet, ReviewsComponent, CitaComponent, ProfileComponent,
-    HistorialCitasComponent, HistorialResenasComponent, CrearCategoriaComponent
+    HistorialCitasComponent, HistorialResenasComponent, CrearCategoriaComponent,
   ],
 })
 export class AppComponent {

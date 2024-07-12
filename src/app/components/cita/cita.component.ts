@@ -15,9 +15,17 @@ import {
   IonSelect,
   IonButton,
   IonAvatar,
+  IonRadio,
   IonRouterOutlet,
   IonCardSubtitle,
   IonDatetime,
+  IonIcon,
+  IonLabel,
+  IonItem,
+  IonList,
+  IonSpinner,
+  IonCardTitle,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,7 +33,7 @@ import { FirestoreService } from '../../common/services/firestore.service';
 import { Citas } from '../../common/models/cita.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../common/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/common/models/users.models';
 import { Service } from 'src/app/common/models/service.models';
 
@@ -36,12 +44,16 @@ import { Service } from 'src/app/common/models/service.models';
     IonButtons,
     IonBackButton,
     IonHeader,
+    IonRadio,
     IonToolbar,
     IonContent,
     IonGrid,
     IonRow,
+    IonIcon,
+    IonLabel,
     IonCol,
     IonCard,
+    IonCardTitle,
     IonCardHeader,
     IonCardContent,
     IonSelectOption,
@@ -52,9 +64,12 @@ import { Service } from 'src/app/common/models/service.models';
     IonAvatar,
     IonCardSubtitle,
     IonDatetime,
+    IonItem,
+    IonList,
+    IonSpinner,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './cita.component.html',
   styleUrls: ['./cita.component.scss'],
@@ -68,13 +83,19 @@ export class CitaComponent implements OnInit {
   serviceId: string | null = null;
   currentUser: User | null = null;
   nombreEmpresa: string = '';
-
- service: Service | null = null;
+  service: Service | null = null;
+  horarios: any[] = [];
+  sortedHorarios: any[] = [];
+  isLoading: boolean = false;
+  today: string = new Date().toISOString().split('T')[0];
+  locale: string = 'es-ES';
 
   constructor(
     private firestoreService: FirestoreService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -89,20 +110,10 @@ export class CitaComponent implements OnInit {
     this.authService.getCurrentUser().subscribe((user) => {
       this.currentUser = user;
     });
-
-// this.loadService(this.serviceId);
   }
-
-
-//  async loadService(serviceId: string) {
-//     this.service = await this.firestoreService.getDocumentById('services', serviceId) as Service;
-//   }
-
 
   async fetchServiceSchedule() {
     try {
-      // console.log('Fetching service schedule...');
-
       if (!this.serviceId) {
         console.error('Service ID is not available.');
         return;
@@ -127,8 +138,8 @@ export class CitaComponent implements OnInit {
           }
 
           this.serviceSchedule = horariosSnapshot.docs[0].data();
-          // console.log('Service schedule data:', this.serviceSchedule);
-
+          this.horarios = horariosSnapshot.docs.map(doc => doc.data());
+          this.sortedHorarios = this.sortHorarios(this.horarios);
           this.initializeCalendar();
         });
       }, (error) => {
@@ -175,8 +186,10 @@ export class CitaComponent implements OnInit {
   }
 
   isDayAvailable(date: Date): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset today's time to midnight
     const dayName = date
-      .toLocaleDateString('es-ES', { weekday: 'long' })
+      .toLocaleDateString(this.locale, { weekday: 'long' })
       .toLowerCase();
     const selectedDays: { [key: string]: boolean } = Object.keys(
       this.serviceSchedule.selectedDays
@@ -184,13 +197,8 @@ export class CitaComponent implements OnInit {
       acc[key.toLowerCase()] = this.serviceSchedule.selectedDays[key];
       return acc;
     }, {});
-    return selectedDays[dayName];
-  }
 
-  async onDateSelected(event: any) {
-    this.selectedDate = event.detail.value;
-    await this.fetchExistingAppointments();
-    this.fetchAvailableSlots();
+    return (date >= today) && selectedDays[dayName];
   }
 
   async fetchExistingAppointments() {
@@ -256,10 +264,41 @@ export class CitaComponent implements OnInit {
     return num < 10 ? '0' + num : num.toString();
   }
 
+  formatHorario(horario: any): string {
+    const start = horario.startTime;
+    const end = horario.endTime;
+    const days = Object.keys(horario.selectedDays)
+      .filter(day => horario.selectedDays[day])
+      .sort((a, b) => this.getDayIndex(a) - this.getDayIndex(b)); // Ordenar los días de la semana
+
+    return `${days.join(', ')}: ${start} - ${end}`;
+  }
+
+  getDayIndex(day: string): number {
+    const daysOrder = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+    return daysOrder.indexOf(day.toLowerCase());
+  }
+
+  sortHorarios(horarios: any[]): any[] {
+    return horarios.sort((a, b) => {
+      const aTime = this.convertToMinutes(a.startTime);
+      const bTime = this.convertToMinutes(b.startTime);
+      return aTime - bTime;
+    });
+  }
+
   async confirmAppointment() {
+    if (!this.selectedDate || !this.selectedSlot) {
+      this.showAlert('Error', 'Por favor seleccione una fecha y una hora.');
+      return;
+    }
+
+    this.isLoading = true;
+
     if (this.currentUser && this.serviceId) {
+      const date = this.selectedDate.split('T')[0];
+
       try {
-        const [date] = this.selectedDate.split('T');
         const appointment: Citas = {
           id: this.firestoreService.createIdDoc(),
           usuario_id: this.currentUser.id,
@@ -271,12 +310,17 @@ export class CitaComponent implements OnInit {
         };
 
         await this.firestoreService.createAppointment(appointment);
-        // console.log('Cita confirmada con éxito:', appointment);
+        this.showAlert('Éxito', 'Cita confirmada con éxito');
         this.resetSelection();
+        this.isLoading = false;
+        this.router.navigate([`/serviceDetail/${this.serviceId}`]); // Asegúrate de actualizar la ruta a la página anterior
       } catch (error) {
+        this.isLoading = false;
+        this.showAlert('Error', 'Error al confirmar la cita: ' + error);
         console.error('Error al confirmar la cita:', error);
       }
     } else {
+      this.showAlert('Error', 'Usuario o servicio no disponible.');
       console.error('Usuario o servicio no disponible.');
     }
   }
@@ -286,4 +330,63 @@ export class CitaComponent implements OnInit {
     this.selectedSlot = '';
     this.availableSlots = [];
   }
+
+  goToProfile() {
+    this.router.navigate(['/perfil']);
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async onDateSelected(event: any) {
+    this.selectedDate = event.detail.value;
+    await this.fetchExistingAppointments();
+    this.fetchAvailableSlots();
+    this.openHorariosModal(); // Abre el modal después de seleccionar la fecha
+  }
+
+  async openHorariosModal() {
+    if (this.availableSlots.length === 0) {
+      const alert = await this.alertController.create({
+        header: 'Horarios Disponibles',
+        message: 'No hay ningún horario disponible',
+        buttons: ['OK']
+      });
+
+      await alert.present();
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Horarios Disponibles',
+        inputs: this.availableSlots.map((slot) => ({
+          type: 'radio',
+          label: slot,
+          value: slot,
+        })),
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+          },
+          {
+            text: 'Aceptar',
+            handler: (selectedSlot) => {
+              if (selectedSlot) {
+                this.selectedSlot = selectedSlot;
+                this.confirmAppointment();
+              }
+            },
+          },
+        ],
+      });
+
+      await alert.present();
+    }
+  }
+
 }

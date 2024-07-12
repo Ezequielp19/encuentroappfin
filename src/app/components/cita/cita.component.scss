@@ -1,5 +1,19 @@
-::ng-deep {
-  .unavailable-day {
-    color: red !important;
-  }
+.unavailable-day {
+  pointer-events: none;
+  color: #ccc;
+}
+
+ion-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+::ng-deep .alert-button.hide {
+  display: none;
+}
+
+::ng-deep .red-text {
+  color: red;
 }
