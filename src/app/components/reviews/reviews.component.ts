@@ -9,6 +9,9 @@ import { AuthService } from '../../common/services/auth.service';
 import { User } from 'src/app/common/models/users.models';
 import { Service } from 'src/app/common/models/service.models';
 import { IoniconsModule } from 'src/app/common/modules/ionicons.module';
+import { AlertController } from '@ionic/angular';
+import { IonSpinner } from '@ionic/angular/standalone';
+
 
 @Component({
   standalone: true,
@@ -28,7 +31,8 @@ import { IoniconsModule } from 'src/app/common/modules/ionicons.module';
     IonSelectOption,
     IonTextarea,
     IonIcon,
-    IoniconsModule
+    IoniconsModule,
+    IonSpinner
   ],
   selector: 'app-reviews',
   templateUrl: './reviews.component.html',
@@ -44,20 +48,24 @@ export class ReviewsComponent implements OnInit {
   reviewsPerPage = 3;
   totalPages = 0;
   currentUser: User | null = null;
+  averageRating: number = 0;
+  isLoading = false;
 
-  @Input() servicioId: string = ''; // Recibe el servicioId como propiedad del componente
-  servicioNombreEmpresa: string = ''; // Almacena el nombre de la empresa del servicio
+  @Input() servicioId: string = '';
+  servicioNombreEmpresa: string = '';
 
   constructor(
     private fb: FormBuilder,
     private firestoreService: FirestoreService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController // Add this line
   ) {
     this.reviewForm = this.fb.group({
-      calificacion: ['', Validators.required],
+      calificacion: [0, Validators.required],
       comentario: ['', Validators.required],
     });
   }
+
 
   ngOnInit() {
     this.fetchReviews();
@@ -73,6 +81,7 @@ export class ReviewsComponent implements OnInit {
         this.reviews = data.filter(review => review.servicio_id === this.servicioId);
         this.totalPages = Math.ceil(this.reviews.length / this.reviewsPerPage);
         this.updatePaginatedReviews();
+        this.calculateAverageRating();
       });
   }
 
@@ -96,13 +105,14 @@ export class ReviewsComponent implements OnInit {
 
   async onSubmit() {
     if (this.reviewForm.valid && this.currentUser) {
+      this.isLoading = true; // Start the spinner
       const { calificacion, comentario } = this.reviewForm.value;
       const review: Reviews = {
-        id: '', // Inicialmente vacío, será asignado en FirestoreService
-        servicio_id: this.servicioId, // Usar el servicioId recibido
-        nombreEmpresa: this.servicioNombreEmpresa, // Usar el nombre de la empresa del servicio
-        nombreCliente: this.currentUser.nombre.toUpperCase(), // Convertir el nombre del cliente a mayúsculas
-        cliente_id: this.currentUser.id, // Asignar el id del usuario autenticado
+        id: '',
+        servicio_id: this.servicioId,
+        nombreEmpresa: this.servicioNombreEmpresa,
+        nombreCliente: this.currentUser.nombre.toUpperCase(),
+        cliente_id: this.currentUser.id,
         calificacion,
         comentario,
       };
@@ -110,15 +120,19 @@ export class ReviewsComponent implements OnInit {
       try {
         await this.firestoreService.createReview(review);
         this.fetchReviews();
-        this.reviewForm.reset();
+        this.reviewForm.reset({ calificacion: 0, comentario: '' });
         this.showForm = false;
+        this.isLoading = false; // Stop the spinner
+        await this.showAlert('Éxito', '¡Gracias por agregar tu reseña!');
       } catch (error) {
+        this.isLoading = false; // Stop the spinner in case of error
         console.error('Error al crear la reseña:', error);
       }
     } else {
       console.error('Formulario inválido o usuario no autenticado');
     }
   }
+
 
   previousPage() {
     if (this.currentPage > 1) {
@@ -137,4 +151,32 @@ export class ReviewsComponent implements OnInit {
   createRange(num: number) {
     return new Array(num);
   }
+
+  selectRating(rating: number) {
+    this.reviewForm.get('calificacion').setValue(rating);
+  }
+
+  calculateAverageRating() {
+    const totalReviews = this.reviews.length;
+    if (totalReviews > 0) {
+      const sumRatings = this.reviews.reduce((sum, review) => sum + review.calificacion, 0);
+      this.averageRating = sumRatings / totalReviews;
+    } else {
+      this.averageRating = 0;
+    }
+  }
+
+  round(value: number) {
+    return Math.round(value);
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 }

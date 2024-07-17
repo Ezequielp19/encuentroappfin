@@ -1,6 +1,5 @@
-
 import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel, IonMenuButton,IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel, IonMenuButton, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg } from '@ionic/angular/standalone';
 import { CategoryI } from '../../common/models/categoria.model'; // Update this import according to your actual model path
 import { FirestoreService } from '../../common/services/firestore.service';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +15,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
   styleUrls: ['crear-categoria.component.scss'], // Update the stylesheet URL accordingly
   standalone: true,
   imports: [IonImg, IonList, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput,
-    IonIcon, IonButton, IonButtons, IonSpinner, IonMenuButton,IonInput, IonCard,
+    IonIcon, IonButton, IonButtons, IonSpinner, IonMenuButton, IonInput, IonCard,
     FormsModule,
     IoniconsModule, CommonModule
   ],
@@ -27,10 +26,9 @@ export class CrearCategoriaComponent implements OnInit {
   newCategory: CategoryI = this.initCategory();
   cargando: boolean = false;
   showForm: boolean = false;
+  editingCategory: CategoryI | null = null;
 
-  constructor(private firestoreService: FirestoreService, private navCtrl: NavController, private router: Router
-    ,  private authService: AuthService,
-  ) {}
+  constructor(private firestoreService: FirestoreService, private navCtrl: NavController, private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     this.loadCategories();
@@ -55,7 +53,14 @@ export class CrearCategoriaComponent implements OnInit {
   async save() {
     this.cargando = true;
     const categoryId = this.newCategory.id;
-    await this.firestoreService.createDocument(this.newCategory, `Categorías/${categoryId}`);
+    if (this.editingCategory) {
+      // Update existing category
+      await this.firestoreService.updateDocument('Categorías', categoryId, this.newCategory);
+      this.editingCategory = null;
+    } else {
+      // Create new category
+      await this.firestoreService.createDocument(this.newCategory, `Categorías/${categoryId}`);
+    }
     this.cargando = false;
     this.newCategory = this.initCategory();
     this.showForm = false;
@@ -74,12 +79,19 @@ export class CrearCategoriaComponent implements OnInit {
 
   toggleForm() {
     this.showForm = !this.showForm;
+    this.newCategory = this.initCategory();
+    this.editingCategory = null;
+  }
+
+  editCategory(category: CategoryI) {
+    this.newCategory = { ...category };
+    this.showForm = true;
+    this.editingCategory = category;
   }
 
   goBack() {
     window.history.back();
   }
-
 
   logout() {
     this.authService.logout();

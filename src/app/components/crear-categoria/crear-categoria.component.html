@@ -47,6 +47,9 @@
         <p>Descripción: {{ category.descripcion }}</p>
       </ion-label>
       <ion-buttons slot="end">
+        <ion-button (click)="editCategory(category)">
+          <ion-icon slot="icon-only" name="create"></ion-icon>
+        </ion-button>
         <ion-button (click)="delete(category)">
           <ion-icon slot="icon-only" name="trash" class="danger"></ion-icon>
         </ion-button>

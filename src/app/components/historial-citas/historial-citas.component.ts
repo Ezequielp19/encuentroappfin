@@ -4,7 +4,7 @@ import { FirestoreService } from 'src/app/common/services/firestore.service';
 import { Citas } from 'src/app/common/models/cita.model';
 import { Observable, from, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { User } from 'src/app/common/models/users.models';
 import { Service } from 'src/app/common/models/service.models';
@@ -28,9 +28,12 @@ export class HistorialCitasComponent implements OnInit {
   userId: string;
   userType: string;
 
-  constructor(private firestoreService: FirestoreService, private authService: AuthService,
+  constructor(
+    private firestoreService: FirestoreService,
+    private authService: AuthService,
     private router: Router,
-  ) { }
+    private alertController: AlertController // Asegúrate de incluir AlertController
+  ) {}
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
@@ -66,6 +69,9 @@ export class HistorialCitasComponent implements OnInit {
       this.citas$.subscribe(citas => {
         this.citas = citas;
         this.paginateCitas();
+        if (this.citas.length === 0) {
+          this.presentNoAppointmentsAlert();
+        }
       });
     } else if (this.userType === 'proveedor') {
       this.firestoreService.getServiceByProviderId(this.userId).subscribe(service => {
@@ -91,13 +97,29 @@ export class HistorialCitasComponent implements OnInit {
           this.citas$.subscribe(citas => {
             this.citas = citas;
             this.paginateCitas();
+            if (this.citas.length === 0) {
+              this.presentNoAppointmentsAlert();
+            }
           });
         } else {
           console.error('No se encontró un servicio para este proveedor.');
           this.citas$ = of([]);
+          this.presentNoAppointmentsAlert();
         }
       });
     }
+  }
+
+  async presentNoAppointmentsAlert() {
+    const message = this.userType === 'cliente'
+      ? 'No tienes citas agendadas.'
+      : 'No tienes citas con clientes.';
+    const alert = await this.alertController.create({
+      header: 'Sin citas',
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   getEstadoClass(estado: string) {

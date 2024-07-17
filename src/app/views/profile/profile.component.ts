@@ -10,7 +10,7 @@ import {
   IonItem, IonButton, IonLabel, IonInput, IonContent, IonGrid, IonRow, IonCol,
   IonCard, IonCardHeader, IonCardTitle, IonList, IonCardContent, IonToolbar,
   IonTitle, IonHeader, IonBackButton, IonButtons, IonSpinner, IonSelectOption,
-  IonSelect, IonAvatar, IonMenu, IonMenuToggle, IonSplitPane, IonIcon, IonRouterOutlet, IonMenuButton
+  IonSelect, IonAvatar, IonMenu, IonMenuToggle, IonSplitPane, IonIcon, IonRouterOutlet, IonMenuButton, MenuController
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -32,16 +32,9 @@ export class ProfileComponent implements OnInit {
   selectedOption: string;
   user: User | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private menuCtrl: MenuController) {}
 
-  // ngOnInit() {
-  //   this.authService.getCurrentUser().subscribe(user => {
-  //     this.user = user;
-  //     console.log(this.user);
-  //   });
-  // }
-
- ngOnInit() {
+  ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
       if (user) {
         this.user = user;
@@ -53,9 +46,9 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
   selectOption(option: string) {
     this.selectedOption = option;
+    this.menuCtrl.close();  // Cerrar el menú después de seleccionar una opción
   }
 
   logout() {

@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/operators';
 import { IoniconsModule } from 'src/app/common/modules/ionicons.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-mi-servicio',
@@ -31,7 +32,8 @@ export class MiServicioComponent implements OnInit {
     private firestoreService: FirestoreService,
     private authService: AuthService,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private alertController: AlertController  // Asegúrate de incluir AlertController
   ) {}
 
   ngOnInit() {
@@ -43,17 +45,38 @@ export class MiServicioComponent implements OnInit {
     });
   }
 
-  loadServiceByProviderId(providerId: string) {
+  async loadServiceByProviderId(providerId: string) {
     this.firestoreService.getServiceByProviderId(providerId).subscribe((service) => {
       if (service) {
         this.service = service;
         this.serviceId = service.id; // Aseguramos que el ID del servicio esté disponible
       } else {
-        console.error('Service not found for providerId:', providerId);
+        this.presentNoServiceAlert();
       }
     }, (error) => {
       console.error('Error loading service:', error);
     });
+  }
+
+  async presentNoServiceAlert() {
+    const alert = await this.alertController.create({
+      header: 'Sin servicio',
+      message: 'No tienes un servicio creado. ¿Deseas crear uno?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Ir a crear servicio',
+          handler: () => {
+            this.router.navigate(['/perfil/crearServicio']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   loadHorarios(userId: string) {

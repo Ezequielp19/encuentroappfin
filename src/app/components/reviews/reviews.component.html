@@ -1,6 +1,13 @@
 <ion-card class="about-card">
   <ion-card-header class="about-card-header">
-    <ion-card-title class="about-card-title">Reseñas</ion-card-title>
+    <div class="header-content">
+      <ion-card-title class="about-card-title">Reseñas</ion-card-title>
+      <div class="average-rating">
+        <ion-icon name="star" *ngFor="let i of createRange(round(averageRating))"></ion-icon>
+        <ion-icon name="star-outline" *ngFor="let i of createRange(5 - round(averageRating))"></ion-icon>
+        <span class="average-rating-number">({{ averageRating.toFixed(1) }})</span>
+      </div>
+    </div>
   </ion-card-header>
   <ion-card-content class="about-card-content">
     <div class="review-grid">
@@ -13,15 +20,16 @@
             <p>{{ review.comentario }}</p>
             <div class="stars">
               <ion-icon name="star" *ngFor="let i of createRange(review.calificacion)"></ion-icon>
+              <ion-icon name="star-outline" *ngFor="let i of createRange(5 - review.calificacion)"></ion-icon>
             </div>
           </ion-card-content>
         </ion-card>
       </div>
     </div>
     <div class="pagination-controls">
-      <ion-button [disabled]="currentPage === 1" (click)="previousPage()">Anterior</ion-button>
+      <ion-button expand="block" [disabled]="currentPage === 1" (click)="previousPage()">Anterior</ion-button>
       <p>Página {{ currentPage }} de {{ totalPages }}</p>
-      <ion-button [disabled]="currentPage === totalPages" (click)="nextPage()">Siguiente</ion-button>
+      <ion-button expand="block" [disabled]="currentPage === totalPages" (click)="nextPage()">Siguiente</ion-button>
     </div>
   </ion-card-content>
 </ion-card>
@@ -32,14 +40,21 @@
   <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label>Calificación</ion-label>
-      <ion-select formControlName="calificacion" placeholder="Selecciona una calificación">
-        <ion-select-option *ngFor="let rating of ratings" [value]="rating">{{ rating }}</ion-select-option>
-      </ion-select>
+      <div class="star-rating">
+        <ion-icon *ngFor="let rating of ratings"
+                  [name]="rating <= reviewForm.get('calificacion').value ? 'star' : 'star-outline'"
+                  (click)="selectRating(rating)">
+        </ion-icon>
+      </div>
     </ion-item>
     <ion-item>
       <ion-label>Comentario</ion-label>
       <ion-textarea formControlName="comentario"></ion-textarea>
     </ion-item>
-    <ion-button expand="block" type="submit" [disabled]="!reviewForm.valid">Enviar</ion-button>
+    <ion-button expand="block" type="submit" [disabled]="!reviewForm.valid || isLoading">
+      Enviar
+      <ion-spinner *ngIf="isLoading" slot="end"></ion-spinner>
+    </ion-button>
   </form>
 </ion-card>
+
