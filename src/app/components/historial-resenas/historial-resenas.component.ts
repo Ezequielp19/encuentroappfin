@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from 'src/app/common/services/firestore.service';
-import { Observable } from 'rxjs';
-import { IonicModule, AlertController } from '@ionic/angular';
+import { Observable, from } from 'rxjs';
+import { IonicModule } from '@ionic/angular';
 import { Reviews } from 'src/app/common/models/reviews.model';
 import { AuthService } from 'src/app/common/services/auth.service';
+import { User } from 'src/app/common/models/users.models';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,12 +26,9 @@ export class HistorialResenasComponent implements OnInit {
   userId: string;
   userType: string;
 
-  constructor(
-    private firestoreService: FirestoreService,
-    private authService: AuthService,
+  constructor(private firestoreService: FirestoreService, private authService: AuthService,
     private router: Router,
-    private alertController: AlertController // Asegúrate de incluir AlertController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(user => {
@@ -53,25 +51,10 @@ export class HistorialResenasComponent implements OnInit {
         resenas = await this.firestoreService.getReviewsByProviderId(this.userId);
       }
       this.resenas = resenas;
-      if (this.resenas.length === 0) {
-        this.presentNoReviewsAlert();
-      }
       this.paginateResenas();
     } catch (error) {
       console.error('Error cargando reseñas:', error);
     }
-  }
-
-  async presentNoReviewsAlert() {
-    const message = this.userType === 'cliente'
-      ? 'No tienes reseñas de servicios.'
-      : 'No tienes reseñas de clientes.';
-    const alert = await this.alertController.create({
-      header: 'Sin reseñas',
-      message: message,
-      buttons: ['OK']
-    });
-    await alert.present();
   }
 
   createRange(num: number) {

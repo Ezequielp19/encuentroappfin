@@ -1,6 +1,6 @@
 .logo {
-  width: 200px;
-  height: auto;
+  width: 200px; /* Ajusta el ancho según el tamaño de tu logo */
+  height: auto;  /* Mantén la proporción de aspecto */
   margin-bottom: 20px;
 }
 
@@ -19,6 +19,7 @@ ion-icon {
   object-fit: cover;
 }
 
+/* Estilos para las tarjetas */
 .info-card, .service-card, .about-card, .review-card {
   margin: 16px;
   border-radius: 10px;
@@ -26,7 +27,7 @@ ion-icon {
 
 .info-card-header, .service-card-header, .about-card-header, .review-card-header {
   padding: 16px;
-  background-color: #34a1cc;
+  background-color: #34a1cc; // Color de fondo gris claro para los encabezados
 }
 
 .info-card-title, .service-card-title, .about-card-title, .review-card-title {
@@ -43,6 +44,7 @@ ion-icon {
   padding: 16px;
 }
 
+/* Estilos para la lista de servicios */
 ion-list {
   background: transparent;
 }
@@ -51,24 +53,25 @@ ion-item {
   --padding-start: 0;
 }
 
+/* Estilo para el botón de reservar cita */
 .book-button {
   margin: 16px;
 }
 
 .review-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 16px;
 }
 
 .review-card {
-  border: 2px solid #34a1cc;
+  border: 2px solid #34a1cc; /* Color del fondo del título del contenedor */
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .review-card-header {
-  background-color: #34a1cc;
+  background-color: #34a1cc; /* Color del fondo del título del contenedor */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -76,23 +79,23 @@ ion-item {
 .review-card-title {
   font-size: 1.2em;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: uppercase; /* Convertir el nombre del cliente a mayúsculas */
 }
 
 .review-card-content p {
-  font-size: 1.1em;
+  font-size: 1.1em; /* Aumentar el tamaño de la fuente del comentario */
 }
 
 .pagination-controls {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   margin-top: 16px;
 }
 
 .pagination-controls p {
-  margin: 8px 0;
-  padding: 0;
+  margin: 0;
+  padding: 0 16px;
 }
 
 .star-rating {
@@ -102,63 +105,10 @@ ion-item {
 }
 
 ion-button {
-  margin: 8px;
+  margin: 16px;
 }
 
 ion-button[expand="block"] {
   width: calc(100% - 32px);
   margin: 0 auto 16px auto;
-}
-
-.stars {
-  display: flex;
-  align-items: center;
-}
-
-ion-icon {
-  color: gold;
-}
-
-.star-rating {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ion-icon {
-    font-size: 2em;
-    cursor: pointer;
-  }
-  .selected {
-    color: gold;
-  }
-}
-
-.average-rating {
-  display: flex;
-  align-items: center;
-  ion-icon {
-    font-size: 1.5em;
-    color: gold;
-  }
-  span {
-    margin-left: 8px;
-    font-size: 1.2em;
-    color: black;
-  }
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.star-rating ion-icon {
-  font-size: 2em;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.star-rating ion-icon.selected {
-  color: gold;
 }
