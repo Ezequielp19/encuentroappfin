@@ -16,11 +16,11 @@
   <form [formGroup]="createServiceForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label>Nombre de la Empresa</ion-label>
-      <ion-input formControlName="nombreEmpresa"></ion-input>
+      <ion-input formControlName="nombreEmpresa" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Email</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
+      <ion-input type="email" formControlName="email" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Descripción</ion-label>
@@ -28,11 +28,11 @@
     </ion-item>
     <ion-item>
       <ion-label>Teléfono</ion-label>
-      <ion-input formControlName="telefono"></ion-input>
+      <ion-input formControlName="telefono" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Categoría</ion-label>
-      <ion-select formControlName="category">
+      <ion-select formControlName="category" required>
         <ion-select-option *ngFor="let category of categories" [value]="category.id">
           {{ category.nombre }}
         </ion-select-option>
@@ -48,12 +48,22 @@
     </ion-item>
     <ion-item>
       <ion-label>Servicio</ion-label>
-      <ion-input formControlName="servicio"></ion-input>
+      <ion-input formControlName="servicio" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Dirección</ion-label>
-      <ion-input formControlName="dirreccion"></ion-input>
+      <ion-input formControlName="dirreccion" required></ion-input>
     </ion-item>
+
+
+<ion-item>
+      <ion-label>Ciudad</ion-label>
+      <ion-input formControlName="ciudad" required></ion-input>
+    </ion-item>
+
+
+
+
     <ion-item>
       <ion-label position="stacked">Imagen</ion-label>
       <input type="file" (change)="onFileSelected($event)">

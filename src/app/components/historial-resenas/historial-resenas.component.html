@@ -13,7 +13,9 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="pagedResenas.length > 0; else loading">
+  <!-- <div *ngIf="pagedResenas.length > 0; else loading"> -->
+    <div *ngIf="pagedResenas.length > 0; else noReviews">
+
     <ion-list>
       <ion-item *ngFor="let resena of pagedResenas[currentPage]">
         <ion-label>
@@ -45,7 +47,9 @@
       </ion-toolbar>
     </ion-footer>
   </div>
-  <ng-template #loading>
-    <ion-spinner></ion-spinner>
+<ng-template #noReviews>
+    <div class="no-reviews">
+      <p>Aún no hay reseñas</p>
+    </div>
   </ng-template>
 </ion-content>

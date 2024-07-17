@@ -62,6 +62,7 @@ export class HomeClienteComponent implements OnInit {
   services: Service[] = [];
   filteredServices: Service[] = [];
   categories: CategoryI[] = [];
+  cities: string[] = [];
 
   constructor(private router: Router, private firestoreService: FirestoreService) { }
 
@@ -73,6 +74,9 @@ export class HomeClienteComponent implements OnInit {
   async loadServices() {
     this.services = await this.firestoreService.getServices();
     this.filteredServices = this.services;
+
+        this.cities = [...new Set(this.services.map(service => service.ciudad))];
+
   }
 
 
@@ -91,14 +95,29 @@ loadCategories() {
     );
   }
 
-  filterServices(event: any) {
+  filterServicesByCity(city: string) {
+    this.filteredServices = this.services.filter(service =>
+      service.ciudad === city
+    );
+  }
+
+   filterServices(event: any) {
     const searchTerm = event.target.value.toLowerCase();
     this.filteredServices = this.services.filter(service =>
       service.nombreEmpresa.toLowerCase().includes(searchTerm) ||
       service.description.toLowerCase().includes(searchTerm) ||
-      service.category.toLowerCase().includes(searchTerm)
+      service.ciudad.toLowerCase().includes(searchTerm)
     );
   }
+
+  // filterServices(event: any) {
+  //   const searchTerm = event.target.value.toLowerCase();
+  //   this.filteredServices = this.services.filter(service =>
+  //     service.nombreEmpresa.toLowerCase().includes(searchTerm) ||
+  //     service.description.toLowerCase().includes(searchTerm) ||
+  //     service.category.toLowerCase().includes(searchTerm)
+  //   );
+  // }
 
   goToService(serviceId: string) {
     this.router.navigate(['/serviceDetail', serviceId]);

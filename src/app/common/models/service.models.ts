@@ -10,10 +10,14 @@ export interface Service {
   price: number;
   servicio: string;
   dirreccion: string;
+  pais:string;
+  ciudad:string;
+
   imageUrl: string;
   horarios: any[];
   instagram?: string;
   whatsapp?: string;
   facebook?: string;
   website?: string;
+
 }

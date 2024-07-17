@@ -34,6 +34,8 @@ log.txt
 npm-debug.log
 yarn-error.log
 
+/android
+
 # IDEs and editors
 .idea/
 .project
@@ -71,3 +73,5 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+

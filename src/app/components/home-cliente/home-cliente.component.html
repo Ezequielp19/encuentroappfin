@@ -26,6 +26,15 @@
     </ion-select>
   </ion-item>
 
+  <ion-item>
+    <ion-label>Ciudad:</ion-label>
+    <ion-select (ionChange)="filterServicesByCity($event.detail.value)">
+      <ion-select-option *ngFor="let city of cities" [value]="city">
+        {{ city }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-list>
     <ion-item *ngFor="let service of filteredServices" (click)="goToService(service.id)">
       <ion-avatar slot="start">

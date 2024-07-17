@@ -1,9 +1,12 @@
-import { IonicModule } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { IonicModule, AlertController} from '@ionic/angular';
+import { Component, ElementRef, OnInit, ViewChild,NgZone, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FirestoreService } from '../../common/services/firestore.service';
 import { AuthService } from '../../common/services/auth.service';
+
+
+
 import { CategoryI } from '../../common/models/categoria.model';
 import { User } from 'src/app/common/models/users.models';
 import { AngularFireStorage } from '@angular/fire/compat/storage'; // Importa AngularFireStorage
@@ -18,12 +21,15 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
+
     IonicModule,
     FormsModule,
     ReactiveFormsModule
   ]
 })
 export class CreateServiceComponent implements OnInit {
+
+
 
   createServiceForm: FormGroup;
   categories: CategoryI[] = [];
@@ -37,22 +43,35 @@ export class CreateServiceComponent implements OnInit {
     private authService: AuthService,
     private storage: AngularFireStorage,
     private router: Router,
+    private ngZone: NgZone,
+        private alertController: AlertController
+
+
+
   ) {
     this.createServiceForm = this.fb.group({
       nombreEmpresa: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      description: ['', Validators.required],
+      description: [''],
       telefono: ['', Validators.required],
       category: ['', Validators.required],
-      sobreNosotros: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
+      sobreNosotros: [''],
+      price: ['', [ Validators.min(0)]],
       servicio: ['', Validators.required],
       dirreccion: ['', Validators.required],
-      imagenUrl: ['']
+      imagenUrl: [''],
+      ciudad:['',Validators.required ]
+
+
+
+
     });
   }
 
   ngOnInit(): void {
+
+
+
     this.loadCategories();
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
@@ -66,6 +85,11 @@ export class CreateServiceComponent implements OnInit {
       }
     });
   }
+
+
+
+
+
 
   onFileSelected(event: any) {
     this.imagenUsuario = event.target.files[0];
@@ -95,7 +119,8 @@ export class CreateServiceComponent implements OnInit {
               // console.log('Datos del servicio:', serviceData);
               try {
                 await this.firestoreService.createService(serviceData);
-                // console.log('Servicio creado con éxito');
+                await this.presentAlert('Éxito', 'El servicio se ha creado correctamente.');
+                this.router.navigate(['/perfil/miServicio']); 
               } catch (error) {
                 console.error('Error al crear el servicio:', error);
               }
@@ -121,6 +146,17 @@ export class CreateServiceComponent implements OnInit {
     } else {
       console.error('Formulario inválido');
     }
+  }
+
+
+   async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 
